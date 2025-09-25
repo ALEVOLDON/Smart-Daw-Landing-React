@@ -1,0 +1,13 @@
+[build]
+  base = "my-react-app"
+  publish = "my-react-app/dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Маршрутизация для SPA (на случай, если Netlify не подхватит _redirects из public)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
