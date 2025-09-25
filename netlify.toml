@@ -1,10 +1,12 @@
 [build]
   base = "my-react-app"
-  publish = "my-react-app/dist"
-  command = "npm run build"
+  publish = "dist"
+  command = "npm ci && npm run build"
 
 [build.environment]
   NODE_VERSION = "20"
+  # На случай проблем с optional native зависимостями (rollup)
+  # NPM_CONFIG_OPTIONAL = "false"
 
 # Маршрутизация для SPA (на случай, если Netlify не подхватит _redirects из public)
 [[redirects]]
