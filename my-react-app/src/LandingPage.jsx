@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 // SmartDAW Landing Page - single-file React component
 // Tailwind CSS required in project
 // Default export: LandingPage
 
 export default function LandingPage() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 antialiased">
       {/* Decorative background */}
@@ -21,7 +22,7 @@ export default function LandingPage() {
       </div>
 
       <header className="relative z-10">
-        <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+        <nav className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-teal-400 flex items-center justify-center shadow-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-white">
@@ -36,7 +37,8 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Desktop nav */}
+          <div className="hidden sm:flex items-center gap-4">
             <a className="text-sm text-gray-300 hover:text-white">Особенности</a>
             <a className="text-sm text-gray-300 hover:text-white">Тарифы</a>
             <a className="text-sm text-gray-300 hover:text-white">Дорожная карта</a>
@@ -44,11 +46,45 @@ export default function LandingPage() {
               Попробовать бесплатно
             </button>
           </div>
+
+          {/* Burger button */}
+          <button
+            type="button"
+            className="sm:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            aria-controls="mobile-menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            <span className="sr-only">Открыть меню</span>
+            {mobileOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
         </nav>
+
+        {/* Mobile menu panel */}
+        {mobileOpen && (
+          <div id="mobile-menu" className="sm:hidden border-t border-gray-800 bg-gray-900/95 backdrop-blur">
+            <div className="max-w-6xl mx-auto px-4 py-4 space-y-2">
+              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">Особенности</a>
+              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">Тарифы</a>
+              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">Дорожная карта</a>
+              <button className="w-full px-4 py-2 rounded-md bg-gradient-to-r from-purple-500 to-teal-400 text-gray-900 font-semibold shadow">
+                Попробовать бесплатно
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       <main className="relative z-10">
-        <section className="max-w-6xl mx-auto px-6 py-20 flex flex-col lg:flex-row items-center gap-12">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
           <div className="w-full lg:w-1/2">
             <h2 className="text-4xl sm:text-5xl font-bold leading-tight">Умная DAW — ваш ИИ‑помощник в мире музыки</h2>
             <p className="mt-4 text-lg text-gray-300">Автоматическое сведение треков с помощью искусственного интеллекта. Быстро. Просто. Профессионально.</p>
@@ -71,7 +107,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-12">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <h3 className="text-2xl font-semibold">Как это работает</h3>
           <p className="mt-2 text-gray-300">Просто загрузите проект Ableton (.als) или Bitwig (.dawproject) — нажмите «Свести» — и получите готовый микс.</p>
 
@@ -91,7 +127,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-12 bg-gradient-to-b from-transparent to-gray-800 rounded-xl">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 bg-gradient-to-b from-transparent to-gray-800/60 rounded-xl">
           <div className="md:flex md:items-center md:justify-between">
             <div>
               <h3 className="text-2xl font-semibold">Интерфейс знаком пользователям Ableton и Bitwig</h3>
@@ -111,7 +147,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-12">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <h3 className="text-2xl font-semibold">Тарифы</h3>
           <p className="mt-2 text-gray-300">Выберите подходящий план: от бесплатного для теста до студийной лицензии для команд.</p>
 
@@ -122,7 +158,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-12 bg-gray-850 rounded-xl">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 bg-gray-800/60 rounded-xl">
           <h3 className="text-2xl font-semibold">Дорожная карта</h3>
           <ol className="mt-6 space-y-4 text-gray-300">
             <li><strong>MVP (3–4 мес.)</strong> — импорт проектов, базовый ИИ-анализ и автоматическое сведение.</li>
@@ -132,7 +168,7 @@ export default function LandingPage() {
           </ol>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 py-16 text-center">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center">
           <h3 className="text-3xl font-bold">Готов начать экономить время на сведении?</h3>
           <p className="mt-3 text-gray-300">Запишитесь в ранний доступ и получите демо‑версию.</p>
           <div className="mt-6 flex items-center justify-center gap-4">
