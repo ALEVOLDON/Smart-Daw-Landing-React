@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // SmartDAW Landing Page - single-file React component
 // Tailwind CSS required in project
@@ -6,6 +6,18 @@ import React, { useState } from "react";
 
 export default function LandingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [lang, setLang] = useState('ru');
+
+  useEffect(() => {
+    const saved = typeof window !== 'undefined' ? window.localStorage.getItem('lang') : null;
+    if (saved === 'ru' || saved === 'en') setLang(saved);
+  }, []);
+
+  useEffect(() => {
+    try { window.localStorage.setItem('lang', lang); } catch (_) {}
+  }, [lang]);
+
+  const isRu = lang === 'ru';
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 antialiased">
       {/* Decorative background */}
@@ -32,19 +44,22 @@ export default function LandingPage() {
               </svg>
             </div>
             <div>
-              <h1 className="text-lg font-semibold leading-tight">Умная DAW</h1>
-              <p className="text-xs text-gray-300 -mt-1">ИИ‑помощник для автоматического сведения</p>
+              <h1 className="text-lg font-semibold leading-tight">{isRu ? 'Умная DAW' : 'Smart DAW'}</h1>
+              <p className="text-xs text-gray-300 -mt-1">{isRu ? 'ИИ‑помощник для автоматического сведения' : 'AI assistant for automatic mixing'}</p>
             </div>
           </div>
 
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-4">
-            <a className="text-sm text-gray-300 hover:text-white">Особенности</a>
-            <a className="text-sm text-gray-300 hover:text-white">Тарифы</a>
-            <a className="text-sm text-gray-300 hover:text-white">Дорожная карта</a>
+            <a className="text-sm text-gray-300 hover:text-white">{isRu ? 'Особенности' : 'Features'}</a>
+            <a className="text-sm text-gray-300 hover:text-white">{isRu ? 'Тарифы' : 'Pricing'}</a>
+            <a className="text-sm text-gray-300 hover:text-white">{isRu ? 'Дорожная карта' : 'Roadmap'}</a>
             <button className="ml-2 px-4 py-2 rounded-md bg-gradient-to-r from-purple-500 to-teal-400 text-gray-900 font-semibold shadow">
-              Попробовать бесплатно
+              {isRu ? 'Попробовать бесплатно' : 'Try for free'}
             </button>
+            <div className="ml-2">
+              <LangSwitch lang={lang} setLang={setLang} />
+            </div>
           </div>
 
           {/* Burger button */}
@@ -72,12 +87,15 @@ export default function LandingPage() {
         {mobileOpen && (
           <div id="mobile-menu" className="sm:hidden border-t border-gray-800 bg-gray-900/95 backdrop-blur">
             <div className="max-w-6xl mx-auto px-4 py-4 space-y-2">
-              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">Особенности</a>
-              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">Тарифы</a>
-              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">Дорожная карта</a>
+              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">{isRu ? 'Особенности' : 'Features'}</a>
+              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">{isRu ? 'Тарифы' : 'Pricing'}</a>
+              <a className="block px-3 py-2 rounded-md text-gray-200 hover:bg-gray-800">{isRu ? 'Дорожная карта' : 'Roadmap'}</a>
               <button className="w-full px-4 py-2 rounded-md bg-gradient-to-r from-purple-500 to-teal-400 text-gray-900 font-semibold shadow">
-                Попробовать бесплатно
+                {isRu ? 'Попробовать бесплатно' : 'Try for free'}
               </button>
+              <div className="pt-2">
+                <LangSwitch lang={lang} setLang={setLang} />
+              </div>
             </div>
           </div>
         )}
@@ -86,19 +104,19 @@ export default function LandingPage() {
       <main className="relative z-10">
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 flex flex-col lg:flex-row items-center gap-10 lg:gap-12">
           <div className="w-full lg:w-1/2">
-            <h2 className="text-4xl sm:text-5xl font-bold leading-tight">Умная DAW — ваш ИИ‑помощник в мире музыки</h2>
-            <p className="mt-4 text-lg text-gray-300">Автоматическое сведение треков с помощью искусственного интеллекта. Быстро. Просто. Профессионально.</p>
+            <h2 className="text-4xl sm:text-5xl font-bold leading-tight">{isRu ? 'Умная DAW — ваш ИИ‑помощник в мире музыки' : 'Smart DAW — your AI assistant for mixing'}</h2>
+            <p className="mt-4 text-lg text-gray-300">{isRu ? 'Автоматическое сведение треков с помощью искусственного интеллекта. Быстро. Просто. Профессионально.' : 'Automatic track mixing powered by AI. Fast. Simple. Professional.'}</p>
 
             <div className="mt-8 flex gap-3">
-              <PrimaryButton>Попробовать бесплатно</PrimaryButton>
-              <SecondaryButton>Записаться в ранний доступ</SecondaryButton>
+              <PrimaryButton>{isRu ? 'Попробовать бесплатно' : 'Try for free'}</PrimaryButton>
+              <SecondaryButton>{isRu ? 'Записаться в ранний доступ' : 'Join early access'}</SecondaryButton>
             </div>
 
             <div className="mt-8 grid grid-cols-2 gap-3 text-sm text-gray-300">
-              <Stat label="Экономия времени" value="До 10x" />
-              <Stat label="Поддержка VST" value="Да" />
-              <Stat label="Экспорт" value="WAV • FLAC • MP3" />
-              <Stat label="Импорт проектов" value="Ableton • Bitwig" />
+              <Stat label={isRu ? 'Экономия времени' : 'Time savings'} value={isRu ? 'До 10x' : 'Up to 10x'} />
+              <Stat label="VST" value={isRu ? 'Поддержка' : 'Supported'} />
+              <Stat label={isRu ? 'Экспорт' : 'Export'} value="WAV • FLAC • MP3" />
+              <Stat label={isRu ? 'Импорт проектов' : 'Project import'} value="Ableton • Bitwig" />
             </div>
           </div>
 
@@ -108,21 +126,21 @@ export default function LandingPage() {
         </section>
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-          <h3 className="text-2xl font-semibold">Как это работает</h3>
-          <p className="mt-2 text-gray-300">Просто загрузите проект Ableton (.als) или Bitwig (.dawproject) — нажмите «Свести» — и получите готовый микс.</p>
+          <h3 className="text-2xl font-semibold">{isRu ? 'Как это работает' : 'How it works'}</h3>
+          <p className="mt-2 text-gray-300">{isRu ? 'Просто загрузите проект Ableton (.als) или Bitwig (.dawproject) — нажмите «Свести» — и получите готовый микс.' : 'Upload an Ableton (.als) or Bitwig (.dawproject), click “Mix”, and get a ready track.'}</p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             <FeatureCard
-              title="Анализ и эквализация"
-              desc="ИИ выявляет частотные конфликты и устраняет резонансы — как Soothe, но автоматически по всей сессии."
+              title={isRu ? 'Анализ и эквализация' : 'Analysis & EQ'}
+              desc={isRu ? 'ИИ выявляет частотные конфликты и устраняет резонансы — как Soothe, но автоматически по всей сессии.' : 'AI finds frequency conflicts and removes resonances automatically across the session.'}
             />
             <FeatureCard
-              title="Панорама и стерео"
-              desc="Автоматическая расстановка панорам для плотной, но чистой стереокартины."
+              title={isRu ? 'Панорама и стерео' : 'Panning & Stereo'}
+              desc={isRu ? 'Автоматическая расстановка панорам для плотной, но чистой стереокартины.' : 'Automatic panning for a dense yet clean stereo field.'}
             />
             <FeatureCard
-              title="Динамика и подбор VST"
-              desc="ИИ подбирает оптимальные VST для компрессии и динамической обработки каждой дорожки."
+              title={isRu ? 'Динамика и подбор VST' : 'Dynamics & VST selection'}
+              desc={isRu ? 'ИИ подбирает оптимальные VST для компрессии и динамической обработки каждой дорожки.' : 'AI suggests optimal VSTs for compression and dynamic processing.'}
             />
           </div>
         </section>
@@ -130,58 +148,58 @@ export default function LandingPage() {
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 bg-gradient-to-b from-transparent to-gray-800/60 rounded-xl">
           <div className="md:flex md:items-center md:justify-between">
             <div>
-              <h3 className="text-2xl font-semibold">Интерфейс знаком пользователям Ableton и Bitwig</h3>
-              <p className="mt-2 text-gray-300">Плавный переход для профессионалов, минимум обучения для новичков.</p>
+              <h3 className="text-2xl font-semibold">{isRu ? 'Интерфейс знаком пользователям Ableton и Bitwig' : 'Familiar for Ableton and Bitwig users'}</h3>
+              <p className="mt-2 text-gray-300">{isRu ? 'Плавный переход для профессионалов, минимум обучения для новичков.' : 'Smooth transition for pros, minimal learning for newcomers.'}</p>
             </div>
             <div className="mt-6 md:mt-0">
               <div className="inline-flex rounded-md shadow">
-                <button className="px-5 py-3 bg-white text-gray-900 font-semibold rounded-md">Скачать демо</button>
+                <button className="px-5 py-3 bg-white text-gray-900 font-semibold rounded-md">{isRu ? 'Скачать демо' : 'Download demo'}</button>
               </div>
             </div>
           </div>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <SmallCard title="Гибридный режим" text="Автомат + ручная доработка" />
-            <SmallCard title="Поддержка VST" text="Совместимость со всеми стандартными VST-плагинами" />
-            <SmallCard title="Экспорт" text="WAV, FLAC, MP3 — готово к мастерингу" />
+            <SmallCard title={isRu ? 'Гибридный режим' : 'Hybrid mode'} text={isRu ? 'Автомат + ручная доработка' : 'Auto + manual fine-tuning'} />
+            <SmallCard title="VST" text={isRu ? 'Совместимость со всеми стандартными VST-плагинами' : 'Compatible with standard VST plugins'} />
+            <SmallCard title={isRu ? 'Экспорт' : 'Export'} text={isRu ? 'WAV, FLAC, MP3 — готово к мастерингу' : 'WAV, FLAC, MP3 — ready for mastering'} />
           </div>
         </section>
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-          <h3 className="text-2xl font-semibold">Тарифы</h3>
-          <p className="mt-2 text-gray-300">Выберите подходящий план: от бесплатного для теста до студийной лицензии для команд.</p>
+          <h3 className="text-2xl font-semibold">{isRu ? 'Тарифы' : 'Pricing'}</h3>
+          <p className="mt-2 text-gray-300">{isRu ? 'Выберите подходящий план: от бесплатного для теста до студийной лицензии для команд.' : 'Choose a plan: from free trial to studio licenses for teams.'}</p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <PriceCard name="Free" price="0" items={["До 5 дорожек", "Базовый ИИ-анализ"]} />
-            <PriceCard name="Pro" price="9.99/mo" items={["Неограниченно дорожек", "Обновления ИИ", "Поддержка VST"]} featured />
-            <PriceCard name="Studio" price="custom" items={["Лицензии для команд", "Облачная обработка", "Приоритетная поддержка"]} />
+            <PriceCard name="Free" price="0" items={isRu ? ["До 5 дорожек", "Базовый ИИ-анализ"] : ["Up to 5 tracks", "Basic AI analysis"]} />
+            <PriceCard name="Pro" price="9.99/mo" items={isRu ? ["Неограниченно дорожек", "Обновления ИИ", "Поддержка VST"] : ["Unlimited tracks", "AI updates", "VST support"]} featured />
+            <PriceCard name="Studio" price="custom" items={isRu ? ["Лицензии для команд", "Облачная обработка", "Приоритетная поддержка"] : ["Team licenses", "Cloud processing", "Priority support"]} />
           </div>
         </section>
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 bg-gray-800/60 rounded-xl">
-          <h3 className="text-2xl font-semibold">Дорожная карта</h3>
+          <h3 className="text-2xl font-semibold">{isRu ? 'Дорожная карта' : 'Roadmap'}</h3>
           <ol className="mt-6 space-y-4 text-gray-300">
-            <li><strong>MVP (3–4 мес.)</strong> — импорт проектов, базовый ИИ-анализ и автоматическое сведение.</li>
-            <li><strong>Beta (6–8 мес.)</strong> — поддержка VST, улучшенные алгоритмы, экспорт.</li>
-            <li><strong>Release (12 мес.)</strong> — гибридный режим, стабильный UI.</li>
-            <li><strong>Expansion</strong> — облако, коллаборации, мобильные клиенты.</li>
+            <li>{isRu ? <span><strong>MVP (3–4 мес.)</strong> — импорт проектов, базовый ИИ-анализ и автоматическое сведение.</span> : <span><strong>MVP (3–4 mo)</strong> — project import, basic AI analysis and auto mixing.</span>}</li>
+            <li>{isRu ? <span><strong>Beta (6–8 мес.)</strong> — поддержка VST, улучшенные алгоритмы, экспорт.</span> : <span><strong>Beta (6–8 mo)</strong> — VST support, improved algorithms, export.</span>}</li>
+            <li>{isRu ? <span><strong>Release (12 мес.)</strong> — гибридный режим, стабильный UI.</span> : <span><strong>Release (12 mo)</strong> — hybrid mode, stable UI.</span>}</li>
+            <li>{isRu ? <span><strong>Expansion</strong> — облако, коллаборации, мобильные клиенты.</span> : <span><strong>Expansion</strong> — cloud, collaboration, mobile clients.</span>}</li>
           </ol>
         </section>
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center">
-          <h3 className="text-3xl font-bold">Готов начать экономить время на сведении?</h3>
-          <p className="mt-3 text-gray-300">Запишитесь в ранний доступ и получите демо‑версию.</p>
+          <h3 className="text-3xl font-bold">{isRu ? 'Готов начать экономить время на сведении?' : 'Ready to save time on mixing?'}</h3>
+          <p className="mt-3 text-gray-300">{isRu ? 'Запишитесь в ранний доступ и получите демо‑версию.' : 'Join early access and get a demo.'}</p>
           <div className="mt-6 flex items-center justify-center gap-4">
-            <PrimaryButton>Записаться в ранний доступ</PrimaryButton>
-            <SecondaryButton>Связаться с нами</SecondaryButton>
+            <PrimaryButton>{isRu ? 'Записаться в ранний доступ' : 'Join early access'}</PrimaryButton>
+            <SecondaryButton>{isRu ? 'Связаться с нами' : 'Contact us'}</SecondaryButton>
           </div>
         </section>
       </main>
 
       <footer className="mt-10 border-t border-gray-800">
         <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-          <div>© {new Date().getFullYear()} Умная DAW — Все права защищены</div>
-          <div className="mt-3 md:mt-0">Политика конфиденциальности • Условия использования</div>
+          <div>© {new Date().getFullYear()} {isRu ? 'Умная DAW — Все права защищены' : 'Smart DAW — All rights reserved'}</div>
+          <div className="mt-3 md:mt-0">{isRu ? 'Политика конфиденциальности • Условия использования' : 'Privacy Policy • Terms of Use'}</div>
         </div>
       </footer>
     </div>
@@ -273,6 +291,23 @@ function PriceCard({ name, price, items = [], featured = false }) {
           Выбрать
         </button>
       </div>
+    </div>
+  );
+}
+
+function LangSwitch({ lang, setLang }) {
+  return (
+    <div className="inline-flex items-center overflow-hidden rounded-md border border-gray-700 bg-gray-800/60">
+      <button
+        className={`px-3 py-1 text-sm ${lang === 'ru' ? 'bg-purple-500 text-white' : 'text-gray-300 hover:text-white'}`}
+        onClick={() => setLang('ru')}
+        aria-pressed={lang === 'ru'}
+      >RU</button>
+      <button
+        className={`px-3 py-1 text-sm ${lang === 'en' ? 'bg-purple-500 text-white' : 'text-gray-300 hover:text-white'}`}
+        onClick={() => setLang('en')}
+        aria-pressed={lang === 'en'}
+      >EN</button>
     </div>
   );
 }
