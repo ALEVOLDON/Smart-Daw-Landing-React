@@ -1,12 +1,12 @@
 [build]
   base = "my-react-app"
   publish = "dist"
-  command = "rm -rf node_modules package-lock.json && npm install --no-audit --no-fund && npm run build"
+  command = "npm install && npm run build"
 
 [build.environment]
   NODE_VERSION = "20"
-  # На случай проблем с optional native зависимостями (rollup)
-  # NPM_CONFIG_OPTIONAL = "false"
+  # Ограничиваем установку optional dependencies для стабильности сборки (rollup)
+  NPM_CONFIG_OPTIONAL = "false"
 
 # Маршрутизация для SPA (на случай, если Netlify не подхватит _redirects из public)
 [[redirects]]
